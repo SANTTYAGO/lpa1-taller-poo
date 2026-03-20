@@ -3,8 +3,7 @@ Clase base abstracta Mueble
 Este es el punto de partida de nuestra jerarquía de clases.
 """
 
-# TODO: Importar ABC y abstractmethod del módulo abc
-# Estos son necesarios para crear clases y métodos abstractos
+from abc import ABC, abstractmethod
 
 
 class Mueble:
@@ -22,76 +21,80 @@ class Mueble:
     def __init__(self, nombre: str, material: str, color: str, precio_base: float):
         """
         Constructor de la clase Mueble.
-        
-        Args:
-            nombre: Nombre del mueble
-            material: Material principal (madera, metal, plástico, etc.)
-            color: Color del mueble
-            precio_base: Precio base antes de aplicar modificadores
         """
-        # TODO: Inicializar los atributos privados usando underscore
-        # Ejemplo: self._nombre = nombre
-        # Esto implementa encapsulación, ocultando los datos internos
+        # Inicialización de atributos protegidos (Encapsulación)
+        self._nombre = nombre
+        self._material = material
+        self._color = color
+        self._precio_base = precio_base
+    
+    # --- PROPIEDADES (Getters) ---
+    
+    @property
+    def nombre(self) -> str:
+        """Getter para el nombre del mueble."""
+        return self._nombre
+
+    @property
+    def material(self) -> str:
+        """Getter para el material del mueble."""
+        return self._material
+
+    @property
+    def color(self) -> str:
+        """Getter para el color del mueble."""
+        return self._color
+
+    @property
+    def precio_base(self) -> float:
+        """Getter para el precio base."""
+        return self._precio_base
+    
+    # --- PROPIEDADES (Setters) ---
+
+    @nombre.setter
+    def nombre(self, valor: str):
+        if not valor or not isinstance(valor, str):
+            raise ValueError("El nombre debe ser una cadena de texto no vacía.")
+        self._nombre = valor
+
+    @material.setter
+    def material(self, valor: str):
+        self._material = valor
+
+    @color.setter
+    def color(self, valor: str):
+        self._color = valor
+
+    @precio_base.setter
+    def precio_base(self, valor: float):
+        if valor < 0:
+            raise ValueError("El precio base no puede ser negativo.")
+        self._precio_base = float(valor)
+    
+    # --- MÉTODOS ABSTRACTOS (Polimorfismo) ---
+
+    @abstractmethod
+    def calcular_precio(self) -> float:
+        """
+        Calcula el precio final del mueble.
+        Debe ser implementado por cada clase concreta (Silla, Mesa, etc.).
+        """
         pass
     
-    # TODO: Implementar las propiedades (getters) para cada atributo
-    # Usa el decorador @property para crear getters
-    # Ejemplo:
-    # @property
-    # def nombre(self) -> str:
-    #     """Getter para el nombre del mueble."""
-    #     return self._nombre
+    @abstractmethod
+    def obtener_descripcion(self) -> str:
+        """
+        Obtiene una descripción detallada del mueble.
+        Debe ser implementado por cada clase concreta.
+        """
+        pass
     
-    # TODO: Implementar los setters para cada atributo donde sea necesario
-    # Usa el decorador @nombre.setter para crear setters
-    # Incluye validaciones básicas (ej: precio no puede ser negativo)
-    # Ejemplo:
-    # @nombre.setter
-    # def nombre(self, value: str) -> None:
-    #     """Setter para el nombre con validación."""
-    #     if not value or not value.strip():
-    #         raise ValueError("El nombre no puede estar vacío")
-    #     self._nombre = value.strip()
-    
-    # TODO: Implementar método abstracto calcular_precio()
-    # Este método debe ser implementado por todas las clases hijas
-    # Usa el decorador @abstractmethod
-    # def calcular_precio(self) -> float:
-    #     """
-    #     Calcula el precio final del mueble.
-    #     Este método debe ser implementado por cada clase concreta.
-    #     
-    #     Returns:
-    #         float: Precio final calculado
-    #     """
-    #     pass
-    
-    # TODO: Implementar método abstracto obtener_descripcion()
-    # Este método debe retornar una descripción detallada del mueble
-    # def obtener_descripcion(self) -> str:
-    #     """
-    #     Obtiene una descripción detallada del mueble.
-    #     Este método debe ser implementado por cada clase concreta.
-    #     
-    #     Returns:
-    #         str: Descripción completa del mueble
-    #     """
-    #     pass
-    
+    # --- MÉTODOS DE REPRESENTACIÓN ---
+
     def __str__(self) -> str:
-        """
-        Representación en cadena del mueble.
-        Este método concreto puede ser usado por todas las clases hijas.
-        """
-        # TODO: Implementar usando las propiedades
-        # return f"{self.nombre} de {self.material} en color {self.color}"
-        pass
+        return f"{self.nombre} de {self.material} color {self.color}"
     
     def __repr__(self) -> str:
-        """
-        Representación técnica del mueble para debugging.
-        """
-        # TODO: Implementar una representación técnica
-        # return f"Mueble(nombre='{self.nombre}', material='{self.material}', color='{self.color}', precio_base={self.precio_base})"
-        pass
-
+        return (f"Mueble(nombre='{self.nombre}', material='{self.material}', "
+                f"color='{self.color}', precio_base={self.precio_base})")
