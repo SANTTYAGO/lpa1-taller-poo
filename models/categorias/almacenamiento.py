@@ -30,7 +30,7 @@ class Almacenamiento(Mueble):
     def tiene_puertas(self) -> bool:
         return self._tiene_puertas
     
-    # --- PROPIEDADES (Setters) ---
+    # --- VALIDACIONES (Setters) ---
 
     @capacidad_volumen.setter
     def capacidad_volumen(self, valor: float):

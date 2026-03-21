@@ -29,7 +29,7 @@ class Superficie(Mueble):
     def es_extensible(self) -> bool:
         return self._es_extensible
 
-    # --- PROPIEDADES (Setters) ---    
+    # --- VALIDACIONES (Setters) ---    
     @ancho.setter
     def ancho(self, valor: float):
         if valor <= 0: raise ValueError("El ancho debe ser positivo.")

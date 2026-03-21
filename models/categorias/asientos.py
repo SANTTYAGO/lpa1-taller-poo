@@ -37,7 +37,7 @@ class Asiento(Mueble):
     def material_tapizado(self) -> str:
         return self._material_tapizado
     
-    # --- PROPIEDADES (Setters) ---
+    # --- VALIDACIONES (Setters) ---
 
     @capacidad_personas.setter
     def capacidad_personas(self, valor: int):
