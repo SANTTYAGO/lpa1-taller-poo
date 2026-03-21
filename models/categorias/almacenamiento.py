@@ -11,7 +11,9 @@ class Almacenamiento(Mueble):
     
     def __init__(self, nombre: str, material: str, color: str, precio_base: float,
                  capacidad_volumen: float, numero_compartimentos: int, tiene_puertas: bool):
+        
         super().__init__(nombre, material, color, precio_base)
+        
         self._capacidad_volumen = capacidad_volumen
         self._numero_compartimentos = numero_compartimentos
         self._tiene_puertas = tiene_puertas

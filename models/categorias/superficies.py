@@ -11,7 +11,9 @@ class Superficie(Mueble):
     
     def __init__(self, nombre: str, material: str, color: str, precio_base: float,
                  ancho: float, largo: float, es_extensible: bool = False):
+        
         super().__init__(nombre, material, color, precio_base)
+        
         self._ancho = ancho
         self._largo = largo
         self._es_extensible = es_extensible
