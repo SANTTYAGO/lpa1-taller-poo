@@ -3,10 +3,10 @@ Clase Comedor que implementa composición.
 Un comedor está compuesto por una mesa y varias sillas.
 """
 
-# TODO: Importar las clases necesarias
-# from ..concretos.mesa import Mesa
-# from ..concretos.silla import Silla
-# from typing import List
+from ..concretos.mesa import Mesa
+from ..concretos.silla import Silla
+from typing import List
+
 
 
 class Comedor:
@@ -27,194 +27,140 @@ class Comedor:
     def __init__(self, nombre: str, mesa: 'Mesa', sillas: List['Silla'] = None):
         """
         Constructor del comedor.
-        
-        Args:
-            nombre: Nombre del set de comedor
-            mesa: Objeto Mesa que forma parte del comedor
-            sillas: Lista de objetos Silla (opcional, se puede crear vacía)
         """
-        # TODO: Inicializar atributos
-        # self._nombre = nombre
-        # self._mesa = mesa
-        # self._sillas = sillas if sillas is not None else []
-        pass
+        # Encapsulación de los componentes
+        self._nombre = nombre
+        self._mesa = mesa
+        # Si no se pasan sillas, inicializamos una lista vacía
+        self._sillas = sillas if sillas is not None else []
+
+    # --- PROPIEDADES (Getters) ---
     
-    # TODO: Implementar propiedades
-    # @property
-    # def nombre(self) -> str:
-    #     """Getter para el nombre del comedor."""
-    #     return self._nombre
+    @property   
+    def nombre(self) -> str:
+        return self._nombre
     
-    # @property
-    # def mesa(self) -> 'Mesa':
-    #     """Getter para la mesa del comedor."""
-    #     return self._mesa
+    @property
+    def mesa(self) -> 'Mesa':
+        return self._mesa
     
-    # @property
-    # def sillas(self) -> List['Silla']:
-    #     """Getter para la lista de sillas."""
-    #     return self._sillas.copy()  # Retorna una copia para proteger la lista interna
+    @property
+    def sillas(self) -> List['Silla']:
+        # Retorna una copia para proteger la lista interna de modificaciones directas
+        return self._sillas.copy()
+
+    # --- VALIDACIONES (Setters) ---
+    # --- MÉTODOS DE LÓGICA ---
     
     def agregar_silla(self, silla: 'Silla') -> str:
         """
         Agrega una silla al comedor.
-        
-        Args:
-            silla: Objeto Silla a agregar
-            
-        Returns:
-            str: Mensaje de confirmación
         """
-        # TODO: Implementar lógica para agregar silla
-        # Validar que sea realmente una Silla
-        # if not isinstance(silla, Silla):
-        #     return "Error: Solo se pueden agregar objetos de tipo Silla"
+        if not isinstance(silla, Silla):
+            return "Error: Solo se pueden agregar objetos de tipo Silla."
         
-        # Verificar capacidad máxima (por ejemplo, basada en el tamaño de la mesa)
-        # capacidad_maxima = self._calcular_capacidad_maxima()
-        # if len(self._sillas) >= capacidad_maxima:
-        #     return f"No se pueden agregar más sillas. Capacidad máxima: {capacidad_maxima}"
+        capacidad_maxima = self._calcular_capacidad_maxima()
+        if len(self._sillas) >= capacidad_maxima:
+            return f"No se pueden agregar más sillas. Capacidad máxima: {capacidad_maxima}."
         
-        # self._sillas.append(silla)
-        # return f"Silla {silla.nombre} agregada exitosamente al comedor"
-        pass
+        self._sillas.append(silla)
+        return f"Silla '{silla.nombre}' agregada exitosamente al comedor."
     
     def quitar_silla(self, indice: int = -1) -> str:
         """
         Quita una silla del comedor.
-        
-        Args:
-            indice: Índice de la silla a quitar (-1 para la última)
-            
-        Returns:
-            str: Mensaje de confirmación
         """
-        # TODO: Implementar lógica para quitar silla
-        # if not self._sillas:
-        #     return "No hay sillas para quitar"
+        if not self._sillas:
+            return "Error: No hay sillas para quitar."
         
-        # try:
-        #     silla_removida = self._sillas.pop(indice)
-        #     return f"Silla {silla_removida.nombre} removida del comedor"
-        # except IndexError:
-        #     return "Índice de silla inválido"
-        pass
-    
+        try:
+            silla_removida = self._sillas.pop(indice)
+            return f"Silla '{silla_removida.nombre}' removida del comedor."
+        except IndexError:
+            return "Error: Índice de silla inválido."
+            
     def calcular_precio_total(self) -> float:
         """
         Calcula el precio total del comedor sumando todos sus componentes.
-        
-        Returns:
-            float: Precio total del set de comedor
         """
-        # TODO: Implementar cálculo de precio total
-        # precio_total = self._mesa.calcular_precio()
+        # Calculamos usando el método de los objetos internos
+        precio_total = self._mesa.calcular_precio()
         
-        # for silla in self._sillas:
-        #     precio_total += silla.calcular_precio()
+        for silla in self._sillas:
+            precio_total += silla.calcular_precio()
         
-        # # Aplicar descuento por set completo (5% si tiene 4 o más sillas)
-        # if len(self._sillas) >= 4:
-        #     precio_total *= 0.95  # 5% de descuento
-        
-        # return round(precio_total, 2)
-        pass
+        # Lógica de negocio: 5% de descuento si es un set completo de 4 o más sillas
+        if len(self._sillas) >= 4:
+            precio_total *= 0.95
+            
+        return round(precio_total, 2)
     
     def obtener_descripcion_completa(self) -> str:
         """
         Obtiene una descripción completa del comedor y todos sus componentes.
-        
-        Returns:
-            str: Descripción detallada del comedor
         """
-        # TODO: Implementar descripción completa
-        # descripcion = f"=== COMEDOR {self.nombre.upper()} ===\n\n"
-        # descripcion += "MESA:\n"
-        # descripcion += self._mesa.obtener_descripcion() + "\n\n"
+        desc = f"=== COMEDOR {self.nombre.upper()} ===\n\n"
         
-        # if self._sillas:
-        #     descripcion += f"SILLAS ({len(self._sillas)} unidades):\n"
-        #     for i, silla in enumerate(self._sillas, 1):
-        #         descripcion += f"{i}. {silla.obtener_descripcion()}\n"
-        # else:
-        #     descripcion += "SILLAS: Ninguna incluida\n"
+        desc += "MESA:\n"
+        desc += f"- {self._mesa.obtener_descripcion()}\n\n"
         
-        # descripcion += f"\n--- PRECIO TOTAL: ${self.calcular_precio_total():.2f} ---"
-        # if len(self._sillas) >= 4:
-        #     descripcion += "\n(Incluye 5% de descuento por set completo)"
-        
-        # return descripcion
-        pass
+        desc += f"SILLAS ({len(self._sillas)} unidades):\n"
+        if not self._sillas:
+            desc += "- Ninguna incluida.\n"
+        else:
+            for i, silla in enumerate(self._sillas, 1):
+                desc += f"{i}. {silla.obtener_descripcion()}\n"
+                
+        desc += f"\n--- PRECIO TOTAL: ${self.calcular_precio_total():,.2f} ---"
+        if len(self._sillas) >= 4:
+            desc += "\n(Incluye 5% de descuento por set completo)"
+            
+        return desc
     
     def _calcular_capacidad_maxima(self) -> int:
         """
         Calcula la capacidad máxima de sillas basada en el tamaño de la mesa.
         Método privado auxiliar.
-        
-        Returns:
-            int: Número máximo de sillas que pueden acomodarse
         """
-        # TODO: Implementar cálculo de capacidad
-        # Este cálculo depende del tamaño de la mesa
-        # Asumir que la mesa tiene un atributo como 'capacidad_personas' o 'forma'
-        
-        # Ejemplo de lógica:
-        # if hasattr(self._mesa, 'capacidad_personas'):
-        #     return self._mesa.capacidad_personas
-        # else:
-        #     # Capacidad por defecto basada en el tamaño
-        #     return 6  # Valor por defecto
-        
-        return 6  # Valor temporal
+        # Ya que nuestra clase Mesa tiene el atributo 'capacidad_personas', lo usamos:
+        if hasattr(self._mesa, 'capacidad_personas'):
+            return self._mesa.capacidad_personas
+        return 6 # Valor por defecto seguro
     
     def obtener_resumen(self) -> dict:
         """
         Obtiene un resumen estadístico del comedor.
-        
-        Returns:
-            dict: Diccionario con información resumida
         """
-        # TODO: Implementar resumen estadístico
-        # resumen = {
-        #     "nombre": self.nombre,
-        #     "total_muebles": 1 + len(self._sillas),  # mesa + sillas
-        #     "precio_mesa": self._mesa.calcular_precio(),
-        #     "precio_sillas": sum(silla.calcular_precio() for silla in self._sillas),
-        #     "precio_total": self.calcular_precio_total(),
-        #     "capacidad_personas": len(self._sillas),
-        #     "materiales_utilizados": self._obtener_materiales_unicos()
-        # }
-        # return resumen
-        pass
+        return {
+            "nombre": self.nombre,
+            "total_muebles": len(self),  # Usa el método mágico __len__
+            "precio_mesa": self._mesa.calcular_precio(),
+            "precio_sillas": sum(s.calcular_precio() for s in self._sillas),
+            "precio_total": self.calcular_precio_total(),
+            "capacidad_personas": len(self._sillas),
+            "materiales_utilizados": self._obtener_materiales_unicos()
+        }
     
     def _obtener_materiales_unicos(self) -> list:
         """
         Obtiene una lista de materiales únicos usados en el comedor.
         Método privado auxiliar.
-        
-        Returns:
-            list: Lista de materiales únicos
         """
-        # TODO: Implementar obtención de materiales
-        # materiales = {self._mesa.material}  # Usar set para evitar duplicados
-        # 
-        # for silla in self._sillas:
-        #     materiales.add(silla.material)
-        #     if hasattr(silla, 'material_tapizado') and silla.material_tapizado:
-        #         materiales.add(silla.material_tapizado)
-        # 
-        # return list(materiales)
-        pass
+        # Usamos un Set para que los materiales no se repitan
+        materiales = {self._mesa.material}
+        
+        for silla in self._sillas:
+            materiales.add(silla.material)
+            # Si la silla tiene tapizado (es un atributo de la clase Asiento)
+            if hasattr(silla, 'material_tapizado') and silla.material_tapizado:
+                materiales.add(silla.material_tapizado)
+                
+        return list(materiales)
     
     def __str__(self) -> str:
-        """Representación en cadena del comedor."""
-        # TODO: Implementar representación
-        # return f"Comedor {self.nombre}: Mesa + {len(self._sillas)} sillas"
-        pass
+        return f"Comedor '{self.nombre}': Mesa de {self._mesa.material} + {len(self._sillas)} sillas."
     
     def __len__(self) -> int:
-        """Retorna el número total de muebles en el comedor."""
-        # TODO: Implementar longitud
-        # return 1 + len(self._sillas)  # mesa + sillas
-        pass
+        """Permite hacer len(mi_comedor) para saber cuántos muebles tiene."""
+        return 1 + len(self._sillas) # 1 (la mesa) + cantidad de sillas
 
