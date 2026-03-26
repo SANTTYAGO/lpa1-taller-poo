@@ -332,7 +332,7 @@ class TestConceptosOOPGenerales:
     Pruebas que validan conceptos generales de OOP aplicados en todo el sistema.
     """
     
-    def test_polimorfismo_general(self):
+    def test_polimorfismo_general(self, muebles_de_prueba):
         """Prueba que diferentes tipos de muebles implementan polimorfismo correctamente."""
         for mueble in muebles_de_prueba.values():
             assert hasattr(mueble, 'calcular_precio')
@@ -340,7 +340,7 @@ class TestConceptosOOPGenerales:
             assert isinstance(mueble.calcular_precio(), float)
             assert isinstance(mueble.obtener_descripcion(), str)
     
-    def test_encapsulacion_general(self):
+    def test_encapsulacion_general(self, muebles_de_prueba):
         """Prueba que la encapsulación funciona correctamente."""
         silla = muebles_de_prueba['silla_basica']
         # No se debe acceder a atributos protegidos directamente en buenas prácticas
@@ -348,7 +348,7 @@ class TestConceptosOOPGenerales:
         assert hasattr(silla, 'nombre')
         assert hasattr(silla, 'precio_base')
     
-    def test_herencia_jerarquia(self):
+    def test_herencia_jerarquia(self, muebles_de_prueba):
         """Prueba que la jerarquía de herencia funciona correctamente."""
         mesa = muebles_de_prueba['mesa_basica']
         assert isinstance(mesa, Superficie)
@@ -372,7 +372,7 @@ class TestIntegracion:
     Pruebas de integración que validan el funcionamiento conjunto de múltiples clases.
     """
     
-    def test_creacion_tienda_completa(self):
+    def test_creacion_tienda_completa(self, muebles_de_prueba):
         """Prueba la creación de una tienda con múltiples tipos de muebles."""
         tienda = TiendaMuebles("Tienda Test")
 

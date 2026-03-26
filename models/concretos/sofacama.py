@@ -28,7 +28,7 @@ class SofaCama(Sofa, Cama):
         """
         Constructor del sofá-cama.
         """
-        super().__init__(self, nombre=nombre, material=material, color=color, 
+        Sofa.__init__(self, nombre=nombre, material=material, color=color, 
                       precio_base=precio_base, capacidad_personas=capacidad_personas, 
                       tiene_respaldo=True, material_tapizado=material_tapizado, 
                       es_modular=False, incluye_cojines=True)

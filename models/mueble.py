@@ -6,7 +6,7 @@ Este es el punto de partida de nuestra jerarquía de clases.
 from abc import ABC, abstractmethod
 
 
-class Mueble:
+class Mueble(ABC):
     """
     Clase abstracta base para todos los muebles.
     
