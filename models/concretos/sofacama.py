@@ -28,18 +28,30 @@ class SofaCama(Sofa, Cama):
         """
         Constructor del sofá-cama.
         """
-        Sofa.__init__(self, nombre=nombre, material=material, color=color, 
-                      precio_base=precio_base, capacidad_personas=capacidad_personas, 
-                      tiene_respaldo=True, material_tapizado=material_tapizado, 
-                      es_modular=False, incluye_cojines=True)
         
-        # 2. En lugar de llamar a Cama.__init__ (que sobreescribiría atributos de Mueble), 
-        # inicializamos directamente los atributos específicos que aporta la Cama.
+        # Asignamos todo directamente a self para evitar el problema del Diamante (MRO)
+        # Atributos base de Mueble
+        self.nombre = nombre
+        self.material = material
+        self.color = color
+        self.precio_base = precio_base
+        
+        # Atributos de Asiento y Sofá
+        self.capacidad_personas = capacidad_personas
+        self.tiene_respaldo = True
+        self.material_tapizado = material_tapizado
+        self.es_modular = False
+        self.incluye_cojines = True
+        
+        # Atributos de Superficie y Cama
+        self.ancho = 1.35  # Valor seguro por defecto
+        self.largo = 1.90
+        self.es_extensible = False
         self.tamaño = tamaño_cama
         self.incluye_colchon = incluye_colchon
-        self.tiene_cabecera = False  # Un sofá cama rara vez tiene cabecera clásica
+        self.tiene_cabecera = False
         
-        # 3. Atributos únicos del Sofá-Cama
+        # Atributos únicos del Sofá-Cama
         self.mecanismo_conversion = mecanismo_conversion
         self._modo_actual = "sofa"  # Por defecto inicia como sofá
 

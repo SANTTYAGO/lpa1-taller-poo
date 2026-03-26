@@ -169,29 +169,24 @@ class TestSofaCama:
         # Implementar test de creación con herencia múltiple
         assert self.sofacama.nombre == "SofaCama Deluxe"
         assert self.sofacama.capacidad_personas == 3
-        assert self.sofacama.tamaño_cama == "matrimonial"
+        assert self.sofacama.tamaño == "matrimonial"
         assert self.sofacama.incluye_colchon == True
         assert self.sofacama.mecanismo_conversion == "plegable"
         assert self.sofacama.modo_actual == "sofa"
     
     def test_conversion_modos(self):
         """Prueba la conversión entre modos sofá y cama."""
-
-        # Inicialmente debe estar en modo sofá
         assert self.sofacama.modo_actual == "sofa"
+        assert self.sofacama.puede_usar_como_sofa() is True
 
-        # Convertir a cama
-        resultado = self.sofacama.convertir_a_cama()
-        assert "convertido a cama" in resultado.lower()
+        # CORRECCIÓN: Usamos 'alternar_modo()' en lugar de 'convertir_a_cama()'
+        resultado = self.sofacama.alternar_modo()
+        assert "es una cama" in resultado.lower()
         assert self.sofacama.modo_actual == "cama"
+        assert self.sofacama.puede_usar_como_cama() is True
 
-        # Intentar convertir a cama nuevamente
-        resultado2 = self.sofacama.convertir_a_cama()
-        assert "ya está en modo cama" in resultado2.lower()
-
-        # Convertir de vuelta a sofá
-        resultado3 = self.sofacama.convertir_a_sofa()
-        assert "convertida a sofá" in resultado3.lower()
+        resultado3 = self.sofacama.alternar_modo()
+        assert "es un sofá" in resultado3.lower()
         assert self.sofacama.modo_actual == "sofa"
     
     def test_calculo_precio_dual(self):
@@ -220,8 +215,7 @@ class TestSofaCama:
         assert isinstance(self.sofacama, Cama)
 
         # Verificar que tiene métodos de ambas clases padre
-        assert hasattr(self.sofacama, 'convertir_a_cama')
-        assert hasattr(self.sofacama, 'convertir_a_sofa')
+        assert hasattr(self.sofacama, 'alternar_modo')
         assert hasattr(self.sofacama, 'calcular_precio')
         assert hasattr(self.sofacama, 'obtener_descripcion')
 
