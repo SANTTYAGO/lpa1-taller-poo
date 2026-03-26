@@ -3,12 +3,11 @@ Clase SofaCama que implementa herencia múltiple.
 Esta clase hereda tanto de Sofa como de Cama.
 """
 
-# TODO: Importar las clases padre
-# from .sofa import Sofa
-# from .cama import Cama
+from .sofa import Sofa
+from .cama import Cama
 
 
-class SofaCama:
+class SofaCama(Sofa, Cama):
     """
     Clase que implementa herencia múltiple heredando de Sofa y Cama.
     
@@ -28,68 +27,58 @@ class SofaCama:
                  mecanismo_conversion: str = "plegable"):
         """
         Constructor del sofá-cama.
-        
-        Args:
-            mecanismo_conversion: Tipo de mecanismo de conversión (plegable, extensible, etc.)
-            Otros argumentos se pasan a las clases padre
         """
-        # TODO: Inicializar usando las clases padre
-        # Nota: En herencia múltiple, solo se llama super().__init__ una vez
-        # Esto llama al primer padre en el MRO (Method Resolution Order)
-        # super().__init__(nombre, material, color, precio_base, capacidad_personas, True, material_tapizado)
+        super().__init__(self, nombre=nombre, material=material, color=color, 
+                      precio_base=precio_base, capacidad_personas=capacidad_personas, 
+                      tiene_respaldo=True, material_tapizado=material_tapizado, 
+                      es_modular=False, incluye_cojines=True)
         
-        # TODO: Inicializar atributos específicos de cama
-        # Necesitamos configurar manualmente los atributos de Cama ya que solo se llama un __init__
-        # self._tamaño_cama = tamaño_cama
-        # self._incluye_colchon = incluye_colchon
+        # 2. En lugar de llamar a Cama.__init__ (que sobreescribiría atributos de Mueble), 
+        # inicializamos directamente los atributos específicos que aporta la Cama.
+        self.tamaño = tamaño_cama
+        self.incluye_colchon = incluye_colchon
+        self.tiene_cabecera = False  # Un sofá cama rara vez tiene cabecera clásica
         
-        # TODO: Inicializar atributos únicos del sofá-cama
-        # self._mecanismo_conversion = mecanismo_conversion
-        # self._modo_actual = "sofa"  # Puede ser "sofa" o "cama"
-        pass
+        # 3. Atributos únicos del Sofá-Cama
+        self.mecanismo_conversion = mecanismo_conversion
+        self._modo_actual = "sofa"  # Por defecto inicia como sofá
+
+    # --- PROPIEDADES (Getters) ---
+
+    @property
+    def mecanismo_conversion(self) -> str:
+        return self._mecanismo_conversion
     
-    # TODO: Implementar propiedades para los nuevos atributos
-    # @property
-    # def mecanismo_conversion(self) -> str:
-    #     """Getter para el mecanismo de conversión."""
-    #     return self._mecanismo_conversion
+    @property
+    def modo_actual(self) -> str:
+        return self._modo_actual
     
-    # @property
-    # def modo_actual(self) -> str:
-    #     """Getter para el modo actual (sofa o cama)."""
-    #     return self._modo_actual
+    # --- VALIDACIONES (Setters) ---
+
+    @mecanismo_conversion.setter
+    def mecanismo_conversion(self, valor: str):
+        if not valor.strip():
+            raise ValueError("El mecanismo de conversión no puede estar vacío.")
+        self._mecanismo_conversion = valor.lower()
+
+    # --- MÉTODOS DE LÓGICA ---
     
-    def convertir_a_cama(self) -> str:
-        """
-        Convierte el sofá en cama.
-        Método específico del sofá-cama.
-        
-        Returns:
-            str: Mensaje del resultado de la conversión
-        """
-        # TODO: Implementar lógica de conversión
-        # if self._modo_actual == "cama":
-        #     return "El sofá-cama ya está en modo cama"
-        
-        # self._modo_actual = "cama"
-        # return f"Sofá convertido a cama usando mecanismo {self.mecanismo_conversion}"
-        pass
+    def alternar_modo(self) -> str:
+        """Cambia el estado del mueble entre sofá y cama."""
+        if self._modo_actual == "sofa":
+            self._modo_actual = "cama"
+            return "Se ha desplegado el mecanismo. Ahora es una cama."
+        else:
+            self._modo_actual = "sofa"
+            return "Se ha plegado el mecanismo. Ahora es un sofá."
+
+    def puede_usar_como_cama(self) -> bool:
+        """Verifica si actualmente puede usarse como cama."""
+        return self._modo_actual == "cama"
     
-    def convertir_a_sofa(self) -> str:
-        """
-        Convierte la cama en sofá.
-        Método específico del sofá-cama.
-        
-        Returns:
-            str: Mensaje del resultado de la conversión
-        """
-        # TODO: Implementar lógica de conversión
-        # if self._modo_actual == "sofa":
-        #     return "El sofá-cama ya está en modo sofá"
-        
-        # self._modo_actual = "sofa"
-        # return f"Cama convertida a sofá usando mecanismo {self.mecanismo_conversion}"
-        pass
+    def puede_usar_como_sofa(self) -> bool:
+        """Verifica si actualmente puede usarse como sofá."""
+        return self._modo_actual == "sofa"
     
     def calcular_precio(self) -> float:
         """
@@ -98,81 +87,48 @@ class SofaCama:
         Returns:
             float: Precio final del sofá-cama
         """
-        # TODO: Implementar cálculo de precio combinado
-        # El sofá-cama es más caro que un sofá o cama individual
-        # 1. Comenzar con precio base
-        # precio = self.precio_base
+        # Partimos de un cálculo base mixto
+        precio = self.precio_base * 1.5  # Premium por ser dual
         
-        # 2. Aplicar factor de comodidad de asiento
-        # precio *= self.calcular_factor_comodidad()
+        # Sumamos lógicas parciales de sus ancestros sin llamar directamente a sus métodos
+        # para evitar conflictos de sobre-cálculo
+        precio += (self.capacidad_personas * 60.0)
         
-        # 3. Agregar valor por funcionalidad dual
-        # precio *= 1.5  # 50% más caro por ser dual
-        
-        # 4. Agregar costo por mecanismo de conversión
-        # if self.mecanismo_conversion == "electrico":
-        #     precio += 200
-        # elif self.mecanismo_conversion == "hidraulico":
-        #     precio += 150
-        # else:  # manual/plegable
-        #     precio += 100
-        
-        # 5. Agregar costo si incluye colchón
-        # if self.incluye_colchon:
-        #     precio += 300
-        
-        # return round(precio, 2)
-        pass
+        if self.incluye_colchon:
+            precio += 150.0
+            
+        if self.mecanismo_conversion == "hidraulico":
+            precio += 120.0  # El mecanismo hidráulico es más costoso
+            
+        return round(precio, 2)
     
     def obtener_descripcion(self) -> str:
         """
         Descripción que combina características de sofá y cama.
-        
-        Returns:
-            str: Descripción completa del sofá-cama
         """
-        # TODO: Crear descripción combinada
-        # descripcion = f"Sofá-cama {self.nombre} fabricado en {self.material} color {self.color}."
-        # descripcion += f"\n{self.obtener_info_asiento()}"
-        # descripcion += f"\nTamaño de cama: {self.tamaño_cama}"
-        # descripcion += f"\nMecanismo de conversión: {self.mecanismo_conversion}"
-        # descripcion += f"\nColchón incluido: {'Sí' if self.incluye_colchon else 'No'}"
-        # descripcion += f"\nModo actual: {self.modo_actual}"
-        # descripcion += f"\nPrecio: ${self.calcular_precio():.2f}"
-        # return descripcion
-        pass
+        desc = f"Sofá-Cama '{self.nombre}' de {self.material} ({self.color}).\n"
+        desc += f"Modo actual: {self.modo_actual.upper()}.\n"
+        desc += f"Como Sofá: {self.capacidad_personas} plazas, tapizado en {self.material_tapizado}.\n"
+        desc += f"Como Cama: Tamaño {self.tamaño}, "
+        desc += "con colchón incluido.\n" if self.incluye_colchon else "sin colchón.\n"
+        desc += f"Mecanismo: {self.mecanismo_conversion.capitalize()}."
+        
+        return desc
     
     def obtener_capacidad_total(self) -> dict:
         """
         Obtiene la capacidad tanto como sofá como cama.
-        Método único del sofá-cama.
-        
-        Returns:
-            dict: Capacidades en ambos modos
         """
-        # TODO: Implementar capacidades
-        # capacidades = {
-        #     "como_sofa": self.capacidad_personas,
-        #     "como_cama": 2 if self.tamaño_cama in ["matrimonial", "queen", "king"] else 1
-        # }
-        # return capacidades
-        pass
-    
-    # TODO: Implementar método para verificar compatibilidad de modo
-    # def puede_usar_como_cama(self) -> bool:
-    #     """Verifica si actualmente puede usarse como cama."""
-    #     return self._modo_actual == "cama"
-    
-    # def puede_usar_como_sofa(self) -> bool:
-    #     """Verifica si actualmente puede usarse como sofá."""
-    #     return self._modo_actual == "sofa"
+        capacidad_cama = 2 if self.tamaño in ["matrimonial", "queen", "king"] else 1
+        return {
+            "como_sofa": self.capacidad_personas,
+            "como_cama": capacidad_cama
+        }
     
     def __str__(self) -> str:
         """
         Representación en cadena del sofá-cama.
         Sobrescribe el método heredado para mostrar información específica.
         """
-        # TODO: Implementar representación personalizada
-        # return f"Sofá-cama {self.nombre} (modo: {self.modo_actual})"
-        pass
+        return f"Sofá-Cama '{self.nombre}' - Modo actual: {self.modo_actual}"
 
